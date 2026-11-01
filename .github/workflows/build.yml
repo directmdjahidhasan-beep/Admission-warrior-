@@ -17,10 +17,15 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
+
+    - name: Install Gradle
+      run: sudo apt-get update && sudo apt-get install -y gradle
+
+    - name: Generate Gradle Wrapper
+      run: gradle wrapper --gradle-version 8.0
 
     - name: Grant execute permission for gradlew
-      run: gradle wrapper
+      run: chmod +x gradlew
 
     - name: Build Debug APK
       run: ./gradlew assembleDebug
@@ -29,4 +34,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: app-debug.apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: app/build/outputs/apk/debug/app-debug.apk 
