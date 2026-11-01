@@ -8,10 +8,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="HTML Runner Pro"
-        android:roundIcon="@mipmap/ic_launcher_round"
+    android:allowBackup="true"
+    android:icon="@drawable/logo"
+    android:label="Admission Warrior"
+    android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         
