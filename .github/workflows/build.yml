@@ -20,11 +20,13 @@ jobs:
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
+      with:
+        packages: 'platforms;android-33' 'build-tools;33.0.2'
 
-    - name: Grant execute and build
+    - name: Create Gradle Wrapper and Build APK
       run: |
         gradle wrapper --gradle-version 8.0
-        chmod +x gradlew
+        chmod +x ./gradlew
         ./gradlew assembleDebug
 
     - name: Upload APK Artifact
