@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -18,17 +19,17 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Setup Android SDK
+    - name: Download and Setup Android SDK & Build Tools
       uses: android-actions/setup-android@v2
 
-    - name: Create Gradle Wrapper and Build APK
+    - name: Build Debug APK using Gradle
       run: |
-        gradle wrapper --gradle-version 8.0
-        chmod +x ./gradlew
-        ./gradlew assembleDebug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-debug.apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        export ANDROID_HOME=$ANDROID_SDK_ROOT
+        echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+        gradle build -Dorg.gradle.java.home="${JAVA_HOME}" || {
+          # Fallback if global gradle is missing, download a quick gradle wrapper
+          npx gradle-to-node || true
+          curl -s https://raw.githubusercontent.com/gradle/gradle/v8.0.0/gradle/wrapper/gradle-wrapper.jar -o gradle-wrapper.jar
+          mvn -version || true
+          ./gradlew assembleDebug || gradle assembleDebug
+        }
